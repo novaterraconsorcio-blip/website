@@ -23,9 +23,10 @@ export default function Home() {
     setStatus('enviando')
     try {
       const url = `https://ahnordxbhndrhfbkqvro.functions.supabase.co/lead-create`
+      const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${anon ?? ''}` },
         body: JSON.stringify({ name: nome, email, phone: telefone })
       })
       if (!res.ok) {
