@@ -1,0 +1,16 @@
+{
+  "name": "novaterra-public",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "resend:test": "node scripts/testResend.mjs",
+    "supabase:test": "node scripts/testSupabase.mjs",
+    "supabase:mgmt:test": "node scripts/testSupabaseManagement.mjs",
+    "supabase:tables": "node scripts/listSupabaseTables.mjs"
+  },
+  "dependencies": {
+    "resend": "^3.3.0",
+    "@supabase/supabase-js": "^2.50.0"
+  }
+}
