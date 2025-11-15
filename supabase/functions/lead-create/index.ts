@@ -18,6 +18,23 @@ Deno.serve(async (req) => {
   if (!sr) return new Response('SERVICE_ROLE_KEY not set', { status: 500, headers: corsHeaders })
   const token = sr
 
+  const recaptchaSecret = Deno.env.get('RECAPTCHA_SECRET')
+  if (recaptchaSecret) {
+    const recaptchaToken = req.headers.get('x-recaptcha-token') || ''
+    if (!recaptchaToken) {
+      return new Response('Missing recaptcha token', { status: 400, headers: corsHeaders })
+    }
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: recaptchaSecret, response: recaptchaToken }).toString()
+    })
+    const verifyJson = await verifyRes.json()
+    if (!verifyJson?.success) {
+      return new Response('Recaptcha failed', { status: 400, headers: corsHeaders })
+    }
+  }
+
   let payload: Record<string, unknown>
   try {
     payload = await req.json()
