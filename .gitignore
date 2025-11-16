@@ -1,15 +1,6 @@
-# Node
+@react-refresh*
+@vite/
 node_modules/
-npm-debug.log*
-yarn-error.log*
-
-# Env
-.env
-.env.*
-
-# OS
+dist/
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
