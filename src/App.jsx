@@ -26,6 +26,7 @@ import Simulacao from "/src/pages/Simulacao.jsx";
 import SobreNos from "/src/pages/SobreNos.jsx";
 import Contato from "/src/pages/Contato.jsx";
 import Blog from "/src/pages/Blog.jsx";
+import Sistema from "/src/pages/Sistema.jsx";
 function App() {
   return /* @__PURE__ */ jsxDEV(Router, { children: /* @__PURE__ */ jsxDEV("div", { className: "min-h-screen flex flex-col bg-white", children: [
     /* @__PURE__ */ jsxDEV(Header, {}, void 0, false, {
@@ -86,6 +87,15 @@ function App() {
       }, this) }, void 0, false, {
         fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/App.jsx",
         lineNumber: 46,
+        columnNumber: 13
+      }, this)
+      , /* @__PURE__ */ jsxDEV(Route, { path: "/sistema", element: /* @__PURE__ */ jsxDEV(Sistema, {}, void 0, false, {
+        fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/App.jsx",
+        lineNumber: 47,
+        columnNumber: 45
+      }, this) }, void 0, false, {
+        fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/App.jsx",
+        lineNumber: 47,
         columnNumber: 13
       }, this)
     ] }, void 0, true, {
