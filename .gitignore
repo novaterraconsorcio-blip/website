@@ -3,10 +3,6 @@ node_modules/
 npm-debug.log*
 yarn-error.log*
 
-# Next.js
-.next/
-nova-terra-web/.next/
-
 # Env
 .env
 .env.*
