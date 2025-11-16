@@ -1906,6 +1906,31 @@ if(!form)return;
 var submitBtn=form.querySelector('button[type="submit"]');
 var statusBox=null;
 
+function maskPhoneDigits(s){
+  var d=String(s).replace(/\D/g,'').slice(0,11);
+  var a=d.slice(0,2);
+  var b=d.slice(2,7);
+  var c=d.slice(7,11);
+  var out='';
+  if(a){
+    out+='('+a;
+    if(a.length===2) out+=')';
+  }
+  if(d.length>2){
+    out+=(a.length===2?' ':'');
+    out+=b;
+    if(c){
+      out+='-'+c;
+    }
+  }
+  return out;
+}
+function applyPhoneMask(){ telefone.value=maskPhoneDigits(telefone.value) }
+telefone.addEventListener('input',applyPhoneMask);
+telefone.addEventListener('blur',applyPhoneMask);
+telefone.setAttribute('placeholder','(00) 00000-0000');
+telefone.setAttribute('maxlength','16');
+
 // Aplicação de configurações de contato
 function getLS(){try{return JSON.parse(localStorage.getItem('nt_contact_settings')||'{}')}catch{return {}}}
 function applySettings(cfg){try{
