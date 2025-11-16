@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação • Nova Terra Consórcio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#24352f;background:#fff}
+    .header{display:flex;justify-content:space-between;align-items:center;padding:1rem;border-bottom:1px solid #e5e7eb}
+    .brand{font-weight:700}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:.6rem;padding:.6rem 1rem;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:#658f4c;color:#fff}
+    .btn-outline{border:1px solid #e5e7eb;background:#fff;color:#24352f}
+    .container{max-width:1100px;margin:0 auto;padding:1rem}
+    .hero{background:linear-gradient(135deg,#658f4c,#346d47);color:#fff}
+    .hero-inner{max-width:1100px;margin:0 auto;padding:2rem 1rem}
+    .slides{position:relative;overflow:hidden;border:1px solid #e5e7eb;border-radius:1rem;background:#fff}
+    .track{display:flex;width:100%;transition:transform .6s ease}
+    .slide{flex:0 0 100%;padding:2rem 1rem}
+    .slide h2{margin:0 0 .75rem;font-size:1.6rem}
+    .slide p{margin:.25rem 0;color:#6b7280}
+    .nav{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;transform:translateY(-50%);pointer-events:none}
+    .nav .btn{pointer-events:auto}
+    .center{max-width:900px;margin:0 auto}
+    .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}@media(min-width:720px){.cats{grid-template-columns:repeat(4,1fr)}}
+    .cat{border:1px solid #e5e7eb;border-radius:.75rem;padding:1rem;text-align:center;cursor:pointer}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:1rem;z-index:100}
+    .modal-card{background:#fff;border-radius:1rem;max-width:800px;width:100%;padding:1rem}
+    .modal-head{display:flex;justify-content:space-between;align-items:center}
+    .list{display:grid;grid-template-columns:1fr;gap:.5rem;margin-top:.5rem}
+    .opt{border:1px solid #e5e7eb;border-radius:.6rem;padding:.6rem 1rem;cursor:pointer}
+    .opt.sel{border-color:#658f4c;box-shadow:0 0 0 2px #658f4c22}
+  </style>
+</head><body>
+  <header class="header"><div class="brand" style="display:flex;align-items:center;gap:.5rem"><div style="width:32px;height:32px;border-radius:.5rem;overflow:hidden;border:1px solid #e5e7eb;background:#fff"><img id="siteLogoAp" alt="Nova Terra" style="width:100%;height:100%;object-fit:contain"></div><span>Nova Terra • Apresentação</span></div><div style="display:flex;gap:.5rem"><button id="fsToggle" class="btn btn-outline">Tela Cheia</button><a class="btn" href="/sistema/">Voltar ao Sistema</a></div></header>
+  <section class="hero"><div class="hero-inner"><h1>Slides de Apresentação</h1><p>Avance e retroceda com as setas do teclado ou pelos botões.</p></div></section>
+  <div class="container" style="margin-top:1rem">
+    <div class="slides">
+      <div class="track" id="track">
+        <div class="slide">
+          <div class="center">
+            <h2>Sobre a Nova Terra Consórcios</h2>
+            <p>Transparência, planejamento e economia para realizar objetivos com segurança.</p>
+            <p>Atendimento consultivo e foco em resultados sustentáveis.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="center">
+            <h2>Sobre a Administradora Âncora</h2>
+            <p>Administradora regulamentada pelo Banco Central, tradição e credibilidade.</p>
+            <p>Produtos com ampla variedade de créditos e prazos.</p>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="center">
+            <h2>Selecione a categoria</h2>
+            <div class="cats">
+              <div class="cat" data-cat="Automóvel">Automóvel</div>
+              <div class="cat" data-cat="Motocicleta">Motocicleta</div>
+              <div class="cat" data-cat="Imóvel">Imóvel</div>
+              <div class="cat" data-cat="Serviços">Serviços</div>
+            </div>
+            <div style="margin-top:1rem"><a class="btn btn-outline" href="/sistema/dashboard/">Fechar</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav"><button id="prev" class="btn btn-outline" aria-label="Anterior">◀</button><button id="next" class="btn btn-outline" aria-label="Próximo">▶</button></div>
+    </div>
+  </div>
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="modalTitle" style="margin:0">Opções</h3><button id="modalClose" class="btn btn-outline">✕</button></div>
+      <div class="list" id="optList"></div>
+      <div style="margin-top:.75rem"><button id="proceed" class="btn btn-primary" style="display:none">Prosseguir</button></div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      try{ var l=document.getElementById('siteLogoAp'); var url='/assets/logo.png'; if(l){ l.src=url; l.onerror=function(){ l.style.display='none' } } }catch{}
+      var idx=0; var track=document.getElementById('track'); var prev=document.getElementById('prev'); var next=document.getElementById('next'); var cats=[].slice.call(document.querySelectorAll('.cat'))
+      function render(){ track.style.transform='translateX(-'+(idx*100)+'%)' }
+      function go(i){ idx=(i+3)%3; render() }
+      if(prev) prev.onclick=function(){ go(idx-1) }; if(next) next.onclick=function(){ go(idx+1) }
+      document.addEventListener('keydown',function(e){ if(e.key==='ArrowLeft') go(idx-1); else if(e.key==='ArrowRight') go(idx+1) })
+      var fs=document.getElementById('fsToggle'); if(fs){ fs.onclick=function(){ if(!document.fullscreenElement){ document.documentElement.requestFullscreen().catch(function(){}) ; fs.textContent='Sair da tela cheia' } else { document.exitFullscreen().catch(function(){}) ; fs.textContent='Tela Cheia' } } }
+      var data={
+        'Automóvel': [ {id:'auto-100', nome:'Crédito R$ 100.000', prazo:'84 meses', parcela:'R$ 1.250'}, {id:'auto-60', nome:'Crédito R$ 60.000', prazo:'72 meses', parcela:'R$ 890'} ],
+        'Motocicleta': [ {id:'moto-20', nome:'Crédito R$ 20.000', prazo:'60 meses', parcela:'R$ 340'}, {id:'moto-15', nome:'Crédito R$ 15.000', prazo:'48 meses', parcela:'R$ 310'} ],
+        'Imóvel': [ {id:'imovel-300', nome:'Crédito R$ 300.000', prazo:'180 meses', parcela:'R$ 2.100'}, {id:'imovel-200', nome:'Crédito R$ 200.000', prazo:'150 meses', parcela:'R$ 1.550'} ],
+        'Serviços': [ {id:'serv-30', nome:'Crédito R$ 30.000', prazo:'60 meses', parcela:'R$ 520'}, {id:'serv-10', nome:'Crédito R$ 10.000', prazo:'36 meses', parcela:'R$ 310'} ]
+      }
+      var modal=document.getElementById('modal'); var title=document.getElementById('modalTitle'); var list=document.getElementById('optList'); var close=document.getElementById('modalClose'); var proceed=document.getElementById('proceed'); var selected=null
+      function openModal(cat){ title.textContent=cat; list.innerHTML=''; selected=null; proceed.style.display='none'; var arr=data[cat]||[]; arr.forEach(function(o){ var el=document.createElement('div'); el.className='opt'; el.textContent=o.nome+' • '+o.prazo+' • '+o.parcela; el.dataset.id=o.id; el.dataset.nome=o.nome; el.dataset.prazo=o.prazo; el.dataset.parcela=o.parcela; el.onclick=function(){ [].forEach.call(list.querySelectorAll('.opt'), function(x){ x.classList.remove('sel') }); el.classList.add('sel'); selected={ cat:cat, id:o.id, nome:o.nome, prazo:o.prazo, parcela:o.parcela }; proceed.style.display='inline-flex' }; list.appendChild(el) }); modal.style.display='flex' }
+      cats.forEach(function(c){ c.onclick=function(){ openModal(c.dataset.cat) } })
+      function closeModal(){ modal.style.display='none' }
+      modal.addEventListener('click', function(e){ if(e.target===modal) closeModal() })
+      if(close) close.onclick=closeModal
+      proceed.onclick=function(){ if(!selected) return; var q='?cat='+encodeURIComponent(selected.cat)+'&id='+encodeURIComponent(selected.id)+'&nome='+encodeURIComponent(selected.nome)+'&prazo='+encodeURIComponent(selected.prazo)+'&parcela='+encodeURIComponent(selected.parcela); window.location.href='/sistema/vendas/registrar/'+q }
+    })()
+  </script>
+</body></html>

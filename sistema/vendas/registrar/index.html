@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Venda • Nova Terra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#24352f;background:#fff}
+    .header{display:flex;justify-content:space-between;align-items:center;padding:1rem;border-bottom:1px solid #e5e7eb}
+    .brand{font-weight:700}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:.6rem;padding:.6rem 1rem;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:#658f4c;color:#fff}
+    .btn-outline{border:1px solid #e5e7eb;background:#fff;color:#24352f}
+    .container{max-width:900px;margin:0 auto;padding:1rem}
+    .card{border:1px solid #e5e7eb;border-radius:1rem;padding:1rem;margin-top:1rem}
+    .grid{display:grid;grid-template-columns:1fr;gap:.75rem}@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+    .muted{color:#6b7280}
+    input,textarea{border:1px solid #e5e7eb;border-radius:.6rem;padding:.6rem 1rem;width:100%}
+  </style>
+</head><body>
+  <header class="header"><div class="brand">Nova Terra • Registrar Venda</div><div><a class="btn" href="/sistema/dashboard/">Voltar</a></div></header>
+  <div class="container">
+    <div class="card">
+      <h2 style="margin:.2rem 0 1rem">Selecionado</h2>
+      <div id="sel"></div>
+    </div>
+    <div class="card">
+      <h2 style="margin:.2rem 0 1rem">Dados do Cliente</h2>
+      <form id="saleForm" class="grid">
+        <input id="cName" type="text" placeholder="Nome do cliente">
+        <input id="cEmail" type="email" placeholder="E-mail">
+        <input id="cPhone" type="text" placeholder="WhatsApp">
+        <textarea id="cNotes" placeholder="Observações" rows="4" style="grid-column:1/-1"></textarea>
+        <button id="saveBtn" type="button" class="btn btn-primary">Confirmar venda</button>
+        <div id="status" class="muted" style="grid-column:1/-1"></div>
+      </form>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var token=null; try{ token=localStorage.getItem('nt_session') }catch{} if(!token){ window.location.replace('/sistema/'); return }
+      var params=new URLSearchParams(location.search); var cat=params.get('cat'); var nome=params.get('nome'); var prazo=params.get('prazo'); var parcela=params.get('parcela'); var sel=document.getElementById('sel'); sel.textContent=(cat||'')+' • '+(nome||'')+' • '+(prazo||'')+' • '+(parcela||'')
+      var save=document.getElementById('saveBtn'); var status=document.getElementById('status'); var form=document.getElementById('saleForm');
+      function payload(){ return { cat:cat, nome:nome, prazo:prazo, parcela:parcela, cliente:{ nome:document.getElementById('cName').value||'', email:document.getElementById('cEmail').value||'', phone:document.getElementById('cPhone').value||'', notes:document.getElementById('cNotes').value||'' } } }
+      if(save){ save.onclick=function(){ var p=payload(); try{ localStorage.setItem('nt_sale_draft', JSON.stringify(p)); status.textContent='Venda registrada localmente. Integração em desenvolvimento.' }catch{ status.textContent='Falha ao salvar' } } }
+    })()
+  </script>
+</body></html>

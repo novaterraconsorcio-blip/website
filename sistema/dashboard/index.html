@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do Corretor • Nova Terra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#24352f;background:#fff}
+    .header{display:flex;justify-content:space-between;align-items:center;padding:1rem;border-bottom:1px solid #e5e7eb}
+    .brand{font-weight:700}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:.6rem;padding:.6rem 1rem;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:#658f4c;color:#fff}
+    .btn-outline{border:1px solid #e5e7eb;background:#fff;color:#24352f}
+    .container{max-width:1180px;margin:0 auto;padding:1rem}
+    .grid{display:grid;grid-template-columns:1fr;gap:1rem}@media(min-width:960px){.grid{grid-template-columns:2fr 1fr}}
+    .cards{display:grid;grid-template-columns:repeat(1,1fr);gap:1rem}@media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+    .card{border:1px solid #e5e7eb;border-radius:.9rem;padding:1rem}
+    .muted{color:#6b7280}
+    .stat{display:flex;align-items:center;justify-content:space-between}
+    .stat h3{margin:0;font-size:1rem;font-weight:600}
+    .stat .val{font-size:1.75rem;font-weight:700;color:#346d47}
+    .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+  </style>
+</head><body>
+  <header class="header"><div class="brand" style="display:flex;align-items:center;gap:.5rem"><div style="width:32px;height:32px;border-radius:.5rem;overflow:hidden;border:1px solid #e5e7eb;background:#fff"><img id="siteLogoDash" alt="Nova Terra" style="width:100%;height:100%;object-fit:contain"></div><span>Nova Terra • Dashboard</span></div><div><button id="logout" class="btn">Sair</button></div></header>
+  <div class="container">
+    <h1>Bem-vindo, <span id="who"></span></h1>
+    <div class="grid">
+      <div>
+        <div class="cards">
+          <div class="card">
+            <div class="stat"><h3>Vendas no mês</h3><div class="val" id="mSales">0</div></div>
+            <div class="muted">Meta: <span id="mGoal">0</span> • Progresso: <span id="mPct">0%</span></div>
+          </div>
+          <div class="card">
+            <div class="stat"><h3>Cotas reservadas</h3><div class="val" id="mCotas">0</div></div>
+            <div class="muted">Reservas válidas por 24h</div>
+          </div>
+          <div class="card">
+            <div class="stat"><h3>Comissões previstas</h3><div class="val" id="mComm">R$ 0</div></div>
+            <div class="muted">Liquidação estimada: <span id="mCommDate">—</span></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3 style="margin:.2rem 0 1rem;font-weight:700">Últimas atividades</h3>
+          <div id="activity" class="muted">Carregando...</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="margin:.2rem 0 1rem;font-weight:700">Ações rápidas</h3>
+          <div class="actions">
+            <button class="btn btn-primary" id="actApresentacao">Abrir apresentação</button>
+            <button class="btn btn-outline" id="actCotas">Gestão de cotas</button>
+            <button class="btn btn-outline" id="actVenda">Registrar venda</button>
+            <button class="btn btn-outline" id="actClientes">Clientes</button>
+            <button class="btn btn-outline" id="actComissoes">Comissões</button>
+            <button class="btn btn-outline" id="actSuporte">Suporte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      try{ var l=document.getElementById('siteLogoDash'); var url='/assets/logo.png'; if(l){ l.src=url; l.onerror=function(){ l.style.display='none' } } }catch{}
+      var token=null; var email=null; try{ token=localStorage.getItem('nt_session'); email=localStorage.getItem('nt_email') }catch{}
+      if(!token){ window.location.replace('/sistema/'); return }
+      var who=document.getElementById('who'); if(who) who.textContent = email || 'Corretor'
+      var logout=document.getElementById('logout'); if(logout){ logout.onclick=function(){ try{ localStorage.removeItem('nt_session'); localStorage.removeItem('nt_email') }catch{} window.location.replace('/sistema/') } }
+      var mSales=document.getElementById('mSales'); var mGoal=document.getElementById('mGoal'); var mPct=document.getElementById('mPct'); var mCotas=document.getElementById('mCotas'); var mComm=document.getElementById('mComm'); var mCommDate=document.getElementById('mCommDate'); var activity=document.getElementById('activity');
+      var sales=Math.floor(3+Math.random()*7); var goal=12; var pct=Math.min(100, Math.round(sales/goal*100)); var cotas=Math.floor(Math.random()*5); var comm=2500+Math.floor(Math.random()*4500);
+      if(mSales) mSales.textContent=String(sales); if(mGoal) mGoal.textContent=String(goal); if(mPct) mPct.textContent=pct+'%'; if(mCotas) mCotas.textContent=String(cotas); if(mComm) mComm.textContent='R$ '+comm.toLocaleString('pt-BR'); if(mCommDate) mCommDate.textContent=new Date(Date.now()+7*24*60*60*1000).toLocaleDateString('pt-BR')
+      var items=[{t:'Reserva de cota #A104',d:'há 2h'},{t:'Venda registrada #V532',d:'há 1d'},{t:'Contato atualizado: Maria Silva',d:'há 3d'}]; activity.innerHTML=items.map(function(i){ return '<div style="padding:.4rem 0;border-bottom:1px solid #eee"><div>'+i.t+'</div><div class="muted">'+i.d+'</div></div>' }).join('')
+      function go(h){ window.location.href=h }
+      var actApresentacao=document.getElementById('actApresentacao'); if(actApresentacao) actApresentacao.onclick=function(){ go('/apresentacao/') }
+      var actCotas=document.getElementById('actCotas'); if(actCotas) actCotas.onclick=function(){ go('/simulacao') }
+      var actVenda=document.getElementById('actVenda'); if(actVenda) actVenda.onclick=function(){ go('/sistema/vendas/registrar/') }
+      var actClientes=document.getElementById('actClientes'); if(actClientes) actClientes.onclick=function(){ go('/contato') }
+      var actComissoes=document.getElementById('actComissoes'); if(actComissoes) actComissoes.onclick=function(){ go('/contato') }
+      var actSuporte=document.getElementById('actSuporte'); if(actSuporte) actSuporte.onclick=function(){ go('/contato') }
+    })()
+  </script>
+</body></html>
