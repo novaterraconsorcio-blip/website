@@ -15,7 +15,7 @@ if (import.meta.hot && !inWebWorker) {
   window.$RefreshSig$ = RefreshRuntime.createSignatureFunctionForTransform;
 }
 var _s = $RefreshSig$();
-import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=f31a5e49"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useState = __vite__cjsImport3_react["useState"];
+import __vite__cjsImport3_react from "/node_modules/.vite/deps/react.js?v=f31a5e49"; const React = __vite__cjsImport3_react.__esModule ? __vite__cjsImport3_react.default : __vite__cjsImport3_react; const useState = __vite__cjsImport3_react["useState"]; const useEffect = __vite__cjsImport3_react["useEffect"];
 import { Helmet } from "/node_modules/.vite/deps/react-helmet.js?v=f31a5e49";
 import { motion } from "/node_modules/.vite/deps/framer-motion.js?v=f31a5e49";
 import { Mail, Phone, MapPin, Clock, Send } from "/node_modules/.vite/deps/lucide-react.js?v=f31a5e49";
@@ -35,6 +35,17 @@ const Contato = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [contact, setContact] = useState({ phone: "(11) 9999-9999", email: "contato@novaterra.com.br", address: "Av. Paulista, 1000\nSão Paulo, SP", whatsapp: "5511999999999" });
+  useEffect(() => {
+    let localCfg = null; try { localCfg = JSON.parse(localStorage.getItem('nt_contact_settings')||'{}') } catch {}
+    if (localCfg && (localCfg.phone || localCfg.email || localCfg.address || localCfg.whatsapp)) {
+      setContact((prev) => ({ ...prev, ...localCfg }));
+    }
+    fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/contact-settings', { method: 'GET' })
+      .then((res) => res.text())
+      .then((t) => { let j=null; try { j = JSON.parse(t) } catch {}; if (j && j.data) { setContact(j.data); try { localStorage.setItem('nt_contact_settings', JSON.stringify(j.data)) } catch {} } })
+      .catch(() => {});
+  }, []);
   const validateForm = () => {
     const newErrors = {};
     if (!formData.nome.trim()) {
@@ -379,7 +390,7 @@ const Contato = () => {
                     lineNumber: 229,
                     columnNumber: 25
                   }, this),
-                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", "data-edit-id": "src/pages/Contato.jsx:272:25", children: "(11) 9999-9999" }, void 0, false, {
+                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", "data-edit-id": "src/pages/Contato.jsx:272:25", children: contact.phone }, void 0, false, {
                     fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/pages/Contato.jsx",
                     lineNumber: 230,
                     columnNumber: 25
@@ -406,7 +417,7 @@ const Contato = () => {
                     lineNumber: 237,
                     columnNumber: 25
                   }, this),
-                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", "data-edit-id": "src/pages/Contato.jsx:280:25", children: "contato@novaterra.com.br" }, void 0, false, {
+                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", "data-edit-id": "src/pages/Contato.jsx:280:25", children: contact.email }, void 0, false, {
                     fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/pages/Contato.jsx",
                     lineNumber: 238,
                     columnNumber: 25
@@ -433,15 +444,7 @@ const Contato = () => {
                     lineNumber: 245,
                     columnNumber: 25
                   }, this),
-                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", "data-edit-disabled": "true", children: [
-                    "Av. Paulista, 1000",
-                    /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
-                      fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/pages/Contato.jsx",
-                      lineNumber: 246,
-                      columnNumber: 98
-                    }, this),
-                    "São Paulo, SP"
-                  ] }, void 0, true, {
+                  /* @__PURE__ */ jsxDEV("p", { className: "text-gray-600", style: { whiteSpace: "pre-line" }, "data-edit-disabled": "true", children: contact.address }, void 0, false, {
                     fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/pages/Contato.jsx",
                     lineNumber: 246,
                     columnNumber: 25
@@ -512,7 +515,7 @@ const Contato = () => {
               lineNumber: 264,
               columnNumber: 19
             }, this),
-            /* @__PURE__ */ jsxDEV(Button, { asChild: true, className: "w-full bg-white text-[#658f4c] hover:bg-gray-100 transition-all duration-300", "data-edit-disabled": "true", children: /* @__PURE__ */ jsxDEV("a", { href: "https://wa.me/5511999999999", target: "_blank", rel: "noopener noreferrer", children: "Abrir WhatsApp" }, void 0, false, {
+            /* @__PURE__ */ jsxDEV(Button, { asChild: true, className: "w-full bg-white text-[#658f4c] hover:bg-gray-100 transition-all duration-300", "data-edit-disabled": "true", children: /* @__PURE__ */ jsxDEV("a", { href: "https://wa.me/" + String(contact.whatsapp).replace(/\D/g,''), target: "_blank", rel: "noopener noreferrer", children: "Abrir WhatsApp" }, void 0, false, {
               fileName: "/home/u354553529/websites/pPNaUZ1QY/public_html/src/pages/Contato.jsx",
               lineNumber: 268,
               columnNumber: 21
