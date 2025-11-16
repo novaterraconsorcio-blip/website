@@ -1,16 +1,33 @@
 {
   "name": "novaterra-public",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "npx http-server -p 3000 -c-1 .",
     "resend:test": "node scripts/testResend.mjs",
     "supabase:test": "node scripts/testSupabase.mjs",
     "supabase:mgmt:test": "node scripts/testSupabaseManagement.mjs",
-    "supabase:tables": "node scripts/listSupabaseTables.mjs"
+    "supabase:tables": "node scripts/listSupabaseTables.mjs",
+    "mirror": "node scripts/mirror.mjs",
+    "snapshot": "node scripts/snapshot.mjs",
+    "snapshot:fix": "node scripts/postprocess.mjs",
+    "crawl": "node scripts/crawl.mjs",
+    "mirror:update": "node scripts/updateMirror.mjs",
+    "mirror:fixlinks": "node scripts/fixLinks.mjs",
+    "mirror:promote": "node scripts/promoteToRoot.mjs",
+    "supabase:functions": "node scripts/listSupabaseFunctions.mjs",
+    "supabase:deploy:send-email": "node scripts/deploySendEmail.mjs"
   },
   "dependencies": {
     "resend": "^3.3.0",
-    "@supabase/supabase-js": "^2.50.0"
+    "@supabase/supabase-js": "^2.50.0",
+    "website-scraper": "^5.3.1",
+    "website-scraper-puppeteer": "^1.0.0",
+    "puppeteer": "^22.12.1",
+    "html-minifier-terser": "^7.2.0",
+    "csso": "^5.0.5",
+    "terser": "^5.36.0",
+    "cheerio": "^1.0.0"
   }
 }

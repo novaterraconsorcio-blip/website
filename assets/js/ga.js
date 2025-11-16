@@ -1,0 +1,1 @@
+const mid=document.querySelector('meta[name="ga-measurement-id"]')?.content;if(mid){const s=document.createElement('script');s.src=`https://www.googletagmanager.com/gtag/js?id=${mid}`;s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments)}gtag('js',new Date());gtag('config',mid)}

@@ -1,0 +1,6 @@
+function read(){try{return JSON.parse(localStorage.getItem('heroSlides')||'[]')}catch{return []}}
+function write(list){localStorage.setItem('heroSlides',JSON.stringify(list))}
+const form=document.querySelector('[data-admin-slider]');const listEl=document.querySelector('[data-admin-list]');const clearBtn=document.querySelector('[data-admin-clear]');function render(){const list=read();listEl.innerHTML='';list.forEach((s,i)=>{const row=document.createElement('div');row.className='card';row.innerHTML=`<strong>${s.title}</strong><p>${s.subtitle}</p><a class="btn btn-secondary" href="${s.ctaHref}">${s.ctaText}</a><div class="sr-only">${i}</div>`;listEl.appendChild(row)})}
+if(form){form.addEventListener('submit',(e)=>{e.preventDefault();const fd=new FormData(form);const item={title:String(fd.get('title')||''),subtitle:String(fd.get('subtitle')||''),ctaText:String(fd.get('ctaText')||''),ctaHref:String(fd.get('ctaHref')||'')};const list=read();list.push(item);write(list);render();const status=form.querySelector('.form-status');status.textContent='Slide adicionado';form.reset()})}
+if(clearBtn){clearBtn.addEventListener('click',()=>{write([]);render()})}
+render()

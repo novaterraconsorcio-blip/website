@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin – Nova Terra Consórcio</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="/">Nova Terra Consórcio</a>
+    </nav>
+  </header>
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1>Gerenciar Slider</h1>
+        <form class="form" data-admin-slider>
+          <label>Título
+            <input name="title" required>
+          </label>
+          <label>Subtítulo
+            <input name="subtitle" required>
+          </label>
+          <label>Texto do botão
+            <input name="ctaText" required>
+          </label>
+          <label>Link do botão
+            <input name="ctaHref" required>
+          </label>
+          <button type="submit" class="btn btn-primary">Adicionar</button>
+          <div class="form-status" aria-live="polite"></div>
+        </form>
+        <div class="slider-items" data-admin-list></div>
+        <button class="btn btn-secondary" data-admin-clear>Limpar</button>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>Admin</p>
+    </div>
+  </footer>
+  <script src="../assets/js/admin.js" defer></script>
+</body>
+</html>

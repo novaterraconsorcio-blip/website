@@ -1,0 +1,1 @@
+const faq=document.querySelector('[data-faq]');if(faq){faq.addEventListener('keydown',(e)=>{if(e.key==='Enter'&&e.target.tagName==='SUMMARY'){e.preventDefault();e.target.parentElement.open=!e.target.parentElement.open}})}
