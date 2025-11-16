@@ -1,47 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin – Nova Terra Consórcio</title>
-  <link rel="stylesheet" href="../assets/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Informações de Contato</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:#f7f7f7;color:#24352f}
+    .container{max-width:960px;margin:0 auto;padding:2rem}
+    .card{background:#fff;border-radius:12px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);padding:1.5rem}
+    h1{font-size:1.75rem;margin:0 0 1rem}
+    label{display:block;font-weight:600;margin-bottom:.25rem}
+    input,textarea{width:100%;padding:.6rem .75rem;border:1px solid #e5e7eb;border-radius:8px}
+    textarea{min-height:100px}
+    .grid{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    .btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 1rem;border-radius:8px;background:#658f4c;color:#fff;font-weight:600;border:none;cursor:pointer}
+    .btn:hover{background:#346d47}
+    .muted{color:#6b7280;font-size:.9rem}
+    .row{display:flex;gap:.75rem;align-items:center;margin:.25rem 0 1rem}
+    .status{margin-top:.75rem;padding:.75rem;border-radius:8px}
+    .status.ok{background:#ecfdf5;color:#065f46;border:1px solid #d1fae5}
+    .status.err{background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="/">Nova Terra Consórcio</a>
-    </nav>
-  </header>
-  <main>
-    <section class="section">
-      <div class="container">
-        <h1>Gerenciar Slider</h1>
-        <form class="form" data-admin-slider>
-          <label>Título
-            <input name="title" required>
-          </label>
-          <label>Subtítulo
-            <input name="subtitle" required>
-          </label>
-          <label>Texto do botão
-            <input name="ctaText" required>
-          </label>
-          <label>Link do botão
-            <input name="ctaHref" required>
-          </label>
-          <button type="submit" class="btn btn-primary">Adicionar</button>
-          <div class="form-status" aria-live="polite"></div>
-        </form>
-        <div class="slider-items" data-admin-list></div>
-        <button class="btn btn-secondary" data-admin-clear>Limpar</button>
+  <div class="container">
+    <div class="card">
+      <h1>Administração — Informações de Contato</h1>
+      <p class="muted">Edite telefone, e‑mail, endereço e WhatsApp exibidos em <code>/contato</code>.</p>
+      <div class="row">
+        <label for="adminKey">Chave de administrador</label>
+        <input id="adminKey" type="password" placeholder="Opcional (para persistência futura)">
       </div>
-    </section>
-  </main>
-  <footer class="site-footer">
-    <div class="container">
-      <p>Admin</p>
+      <form id="adminForm" class="grid">
+        <div>
+          <label for="phone">Telefone</label>
+          <input id="phone" type="text" placeholder="(11) 9999-9999">
+        </div>
+        <div>
+          <label for="email">E‑mail</label>
+          <input id="email" type="email" placeholder="contato@novaterra.com.br">
+        </div>
+        <div style="grid-column:1/-1">
+          <label for="address">Endereço</label>
+          <textarea id="address" placeholder="Av. Paulista, 1000\nSão Paulo, SP"></textarea>
+        </div>
+        <div>
+          <label for="whatsapp">WhatsApp (apenas números com DDI)</label>
+          <input id="whatsapp" type="text" placeholder="5511999999999">
+        </div>
+        <div style="grid-column:1/-1;display:flex;gap:.75rem;flex-wrap:wrap">
+          <button type="submit" class="btn">Salvar</button>
+          <button type="button" id="resetBtn" class="btn" style="background:#6b7280">Restaurar padrão</button>
+          <button type="button" id="exportBtn" class="btn" style="background:#24352f">Exportar JSON</button>
+          <label for="importFile" class="btn" style="background:#24352f;cursor:pointer">Importar JSON</label>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+        </div>
+        <div id="status"></div>
+      </form>
+      <p class="muted">As mudanças são aplicadas imediatamente no seu navegador em <code>/contato</code>. Para persistência global, configuraremos Supabase Storage/DB.</p>
     </div>
-  </footer>
-  <script src="../assets/js/admin.js" defer></script>
+
+    <div class="card" style="margin-top:1rem">
+      <h1>Administração — Accordions de "Como Funciona"</h1>
+      <p class="muted">Gerencie os itens do acordeão exibidos na página <code>/como-funciona</code>.</p>
+      <div id="cfList" class="grid" style="grid-template-columns:1fr;gap:1rem"></div>
+      <div class="row" style="margin-top:.5rem">
+        <button id="cfAdd" class="btn">Adicionar item</button>
+        <button id="cfSave" class="btn" style="background:#24352f">Salvar alterações</button>
+        <button id="cfExport" class="btn" style="background:#24352f">Exportar JSON</button>
+        <label for="cfImportFile" class="btn" style="background:#24352f;cursor:pointer">Importar JSON</label>
+        <input id="cfImportFile" type="file" accept="application/json" style="display:none" />
+      </div>
+      <div id="cfStatus" class="status" style="display:none"></div>
+    </div>
+  </div>
+
+  <script>
+    const LS_KEY = 'nt_contact_settings';
+    const LS_CF = 'nt_cf_accordions';
+    const defaults = {
+      phone: '(11) 9999-9999',
+      email: 'contato@novaterra.com.br',
+      address: 'Av. Paulista, 1000\nSão Paulo, SP',
+      whatsapp: '5511999999999'
+    };
+    function loadFromLS(){ try { return JSON.parse(localStorage.getItem(LS_KEY)||'{}') } catch { return {} } }
+    function saveToLS(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)) }
+    function setStatus(type,msg){ const el=document.getElementById('status'); el.className='status '+(type==='ok'?'ok':'err'); el.textContent=msg }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+      const form = document.getElementById('adminForm');
+      const phone = document.getElementById('phone');
+      const email = document.getElementById('email');
+      const address = document.getElementById('address');
+      const whatsapp = document.getElementById('whatsapp');
+      const adminKey = document.getElementById('adminKey');
+      const current = Object.assign({}, defaults, loadFromLS());
+      phone.value = current.phone; email.value = current.email; address.value = current.address; whatsapp.value = current.whatsapp;
+
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const data = { phone: phone.value.trim(), email: email.value.trim(), address: address.value.trim(), whatsapp: whatsapp.value.trim() };
+        saveToLS(data);
+        setStatus('ok', 'Configurações salvas localmente. Abra /contato para ver.');
+        try {
+          const res = await fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/contact-settings', {
+            method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-key': adminKey.value || '' }, body: JSON.stringify(data)
+          });
+          const t = await res.text(); let j=null; try{ j=JSON.parse(t) }catch{}
+          if (res.ok && j && (j.ok||j.updated)) setStatus('ok', 'Persistência enviada.'); else setStatus('err', (j&&j.error)||'Persistência indisponível. Valores locais aplicados.');
+        } catch { /* ignore network */ }
+      });
+
+      document.getElementById('resetBtn').addEventListener('click',()=>{
+        phone.value = defaults.phone; email.value = defaults.email; address.value = defaults.address; whatsapp.value = defaults.whatsapp;
+      });
+
+      document.getElementById('exportBtn').addEventListener('click',()=>{
+        const data = { phone: phone.value.trim(), email: email.value.trim(), address: address.value.trim(), whatsapp: whatsapp.value.trim() };
+        const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'contact-settings.json'; a.click(); URL.revokeObjectURL(a.href);
+      });
+
+      document.getElementById('importFile').addEventListener('change',async (ev)=>{
+        const f = ev.target.files && ev.target.files[0]; if(!f) return;
+        try { const txt = await f.text(); const j = JSON.parse(txt);
+          phone.value = j.phone || phone.value; email.value = j.email || email.value; address.value = j.address || address.value; whatsapp.value = j.whatsapp || whatsapp.value;
+          setStatus('ok','Arquivo importado. Clique em Salvar para aplicar.');
+        } catch { setStatus('err','Arquivo inválido'); }
+      });
+
+      // ----- Como Funciona Accordions -----
+      const cfList = document.getElementById('cfList');
+      const cfStatus = document.getElementById('cfStatus');
+      function getCF(){ try { return JSON.parse(localStorage.getItem(LS_CF)||'[]') } catch { return [] } }
+      const defaultCF = [
+        { title:'Pergunta 1', content:'Resposta 1' },
+        { title:'Pergunta 2', content:'Resposta 2' },
+        { title:'Pergunta 3', content:'Resposta 3' },
+        { title:'Pergunta 4', content:'Resposta 4' },
+        { title:'Pergunta 5', content:'Resposta 5' },
+        { title:'Pergunta 6', content:'Resposta 6' }
+      ];
+      function setCF(arr){ localStorage.setItem(LS_CF, JSON.stringify(arr)) }
+      function cfMsg(type,msg){ cfStatus.style.display='block'; cfStatus.className='status '+(type==='ok'?'ok':'err'); cfStatus.textContent=msg }
+      function renderCF(){
+        cfList.innerHTML='';
+        let items = getCF();
+        if(!items.length){ items = defaultCF.slice() }
+        if(items.length < 6){
+          // completar até 6 com defaults
+          const needed = 6 - items.length;
+          for(let i=0;i<needed;i++){ items.push(defaultCF[(items.length+i)%defaultCF.length]) }
+        }
+        if(items.length > 6){ items = items.slice(0,6) }
+        items.forEach((it, idx)=>{
+          const wrap=document.createElement('div');
+          const titleLabel=document.createElement('label'); titleLabel.textContent='Título '+(idx+1);
+          const title=document.createElement('input'); title.value=it.title||''; title.placeholder='Título do item';
+          const contentLabel=document.createElement('label'); contentLabel.textContent='Conteúdo '+(idx+1);
+          const content=document.createElement('textarea'); content.value=it.content||''; content.placeholder='Conteúdo do item';
+          const row=document.createElement('div'); row.className='row';
+          const delBtn=document.createElement('button'); delBtn.textContent='Remover'; delBtn.className='btn'; delBtn.style.background='#6b7280';
+          delBtn.addEventListener('click',()=>{
+            const arr=getCF(); arr.splice(idx,1); setCF(arr); renderCF(); cfMsg('ok','Item removido');
+          });
+          row.appendChild(delBtn);
+          wrap.appendChild(titleLabel); wrap.appendChild(title);
+          wrap.appendChild(contentLabel); wrap.appendChild(content);
+          wrap.appendChild(row);
+          cfList.appendChild(wrap);
+        });
+      }
+      renderCF();
+      document.getElementById('cfAdd').addEventListener('click',()=>{
+        const arr=getCF(); if(arr.length>=6){ cfMsg('err','Limite de 6 itens atingido'); return }
+        arr.push({ title:'Novo item', content:'Conteúdo...' }); setCF(arr); renderCF(); cfMsg('ok','Item adicionado');
+      });
+      document.getElementById('cfSave').addEventListener('click',async ()=>{
+        const arr=[]; const kids=[...cfList.children];
+        kids.forEach((wrap)=>{
+          const inputs=wrap.querySelectorAll('input,textarea');
+          arr.push({ title: inputs[0].value.trim(), content: inputs[1].value.trim() });
+        });
+        setCF(arr); cfMsg('ok','Accordions salvos localmente.');
+        try{
+          const r = await fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/cf-accordions', {
+            method:'POST', headers:{'Content-Type':'application/json','x-admin-key': adminKey.value||''}, body: JSON.stringify({ items: arr })
+          });
+          const t=await r.text(); let j=null; try{ j=JSON.parse(t) }catch{}
+          if(r.ok && j && j.ok){ cfMsg('ok','Persistência enviada com sucesso.') }
+          else{ cfMsg('err', (j&&j.error)||'Falha ao enviar persistência') }
+        }catch{ /* ignore */ }
+      });
+      document.getElementById('cfExport').addEventListener('click',()=>{
+        const arr=getCF(); const blob=new Blob([JSON.stringify(arr,null,2)],{type:'application/json'});
+        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='como-funciona-accordions.json'; a.click(); URL.revokeObjectURL(a.href);
+      });
+      document.getElementById('cfImportFile').addEventListener('change',async (ev)=>{
+        const f=ev.target.files&&ev.target.files[0]; if(!f) return;
+        try{ const txt=await f.text(); const j=JSON.parse(txt); if(Array.isArray(j)){ setCF(j); renderCF(); cfMsg('ok','Arquivo importado. Clique em Salvar para aplicar.'); } else { cfMsg('err','JSON inválido'); } }
+        catch{ cfMsg('err','Arquivo inválido') }
+      });
+    });
+  </script>
 </body>
 </html>

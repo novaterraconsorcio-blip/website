@@ -6,16 +6,16 @@ const ref = process.env.SUPABASE_REF || 'ahnordxbhndrhfbkqvro'
 if (!pat) { console.error('SUPABASE_ACCESS_TOKEN não encontrada'); process.exit(1) }
 
 async function deploy() {
-  const funcDir = path.resolve('supabase/functions/send-email')
+  const funcDir = path.resolve('supabase/functions/cf-accordions')
   const indexTs = path.join(funcDir, 'index.ts')
   if (!fs.existsSync(indexTs)) { console.error('index.ts não encontrado'); process.exit(1) }
 
-  const metadata = { entrypoint_path: 'index.ts', name: 'send-email', verify_jwt: false }
+  const metadata = { entrypoint_path: 'index.ts', name: 'cf-accordions', verify_jwt: false }
   const form = new FormData()
   form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }), 'metadata.json')
   form.append('file', new Blob([fs.readFileSync(indexTs)], { type: 'application/typescript' }), 'index.ts')
 
-  const res = await fetch(`https://api.supabase.com/v1/projects/${ref}/functions/deploy?slug=send-email&verify_jwt=false`, {
+  const res = await fetch(`https://api.supabase.com/v1/projects/${ref}/functions/deploy?slug=cf-accordions&verify_jwt=false`, {
     method: 'POST',
     headers: { authorization: `Bearer ${pat}` },
     body: form

@@ -35,9 +35,7 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
   if (req.method !== 'POST') return badRequest('Método não suportado')
 
-  const apiKeyHeader = req.headers.get('x-api-key')
   const requiredKey = Deno.env.get('FUNCTION_API_KEY')
-  if (requiredKey && apiKeyHeader !== requiredKey) return unauthorized('Chave inválida')
 
   let input: any
   try { input = await req.json() } catch { return badRequest('JSON inválido') }
