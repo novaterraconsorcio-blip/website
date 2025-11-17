@@ -85,6 +85,7 @@ console.error = function(...args) {
 	}, '*');
 };
 </script>
+<script>document.addEventListener('DOMContentLoaded',function(){var wa='5551981568156';var msg=encodeURIComponent('Olá! Nova Terra?');[].slice.call(document.querySelectorAll('a[href^="https://wa.me/"],a[href^="https://api.whatsapp.com/send"]')).forEach(function(a){a.setAttribute('href','https://wa.me/'+wa+'?text='+msg)});var fb=document.querySelector('button[aria-label="Fale conosco no WhatsApp"]');if(fb){fb.addEventListener('click',function(){window.open('https://wa.me/'+wa+'?text='+msg,'_blank')})}try{var cfg=JSON.parse(localStorage.getItem('nt_contact_settings')||'{}');cfg.whatsapp=wa;localStorage.setItem('nt_contact_settings',JSON.stringify(cfg))}catch{}});</script>
 <script>document.addEventListener('DOMContentLoaded',function(){var el=document.querySelector('header a.group > div.w-10.h-10');if(el){el.className='w-10 h-10 rounded-lg overflow-hidden border border-gray-200 bg-white flex items-center justify-center transition-transform duration-300 group-hover:scale-110';el.innerHTML='<img src="/assets/logo.png" alt="Nova Terra Consórcio" style="width:100%;height:100%;object-fit:contain">';}var fl=document.querySelector('footer div.w-10.h-10');if(fl){fl.className='w-10 h-10 rounded-lg overflow-hidden border border-gray-200 bg-white flex items-center justify-center';fl.innerHTML='<img src="/assets/logo.png" alt="Nova Terra Consórcio" style="width:100%;height:100%;object-fit:contain">';}});</script>
 		<script type="module">
 const originalFetch = window.fetch;
