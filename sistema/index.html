@@ -2,7 +2,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Gestão • Nova Terra Consórcio</title>
-  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+  <link id="faviconLink" rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -13,16 +13,18 @@
     .header{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem}
     .brand{display:flex;align-items:center;gap:.5rem;text-decoration:none}
-    .brand-badge{width:40px;height:40px;border-radius:.75rem;background:var(--primary);display:flex;align-items:center;justify-content:center}
-    .brand-badge span{color:#fff;font-weight:700}
+    .brand-badge{width:40px;height:40px;border-radius:.75rem;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e5e7eb}
+    .brand-badge img{width:100%;height:100%;object-fit:contain}
     .brand-title{font-weight:700;color:var(--neutral)}
     .hero{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
     .hero-inner{padding:3rem 1rem}
     .hero h1{font-size:2rem;line-height:1.2;margin:0 0 .5rem}
     .hero p{opacity:.9;margin:0}
     .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:.5rem;padding:.6rem 1rem;border:0;cursor:pointer;font-weight:600}
-    .btn-primary{background:#fff;color:var(--primary)}.btn-primary:hover{background:#f3f4f6}
-    .btn-outline{border:1px solid #fff;color:#fff;background:transparent}.btn-outline:hover{background:#ffffff22}
+    .btn-primary{background:#658f4c;color:#fff}.btn-primary:hover{background:#547b41}
+    .btn-outline{border:1px solid #e5e7eb;color:#24352f;background:transparent}.btn-outline:hover{background:#f9fafb}
+    .hero .btn-primary{background:#fff;color:var(--primary)}.hero .btn-primary:hover{background:#f3f4f6}
+    .hero .btn-outline{border:1px solid #fff;color:#fff;background:transparent}.hero .btn-outline:hover{background:#ffffff22}
     .grid{display:grid;grid-template-columns:repeat(1,1fr);gap:1rem}@media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr)}}
     .card{border:1px solid #e5e7eb;border-radius:.75rem;padding:1rem}
     .card h3{margin:.25rem 0;font-weight:600}
@@ -34,7 +36,7 @@
   <header class="header">
     <nav class="nav container">
       <a class="brand" href="/">
-        <div class="brand-badge"><span>NT</span></div>
+        <div class="brand-badge"><img id="siteLogo" alt="Nova Terra"></div>
         <span class="brand-title">Nova Terra Consórcio</span>
       </a>
       <div style="display:flex;gap:.5rem">
@@ -57,6 +59,43 @@
     </div>
   </section>
 
+  
+
+  <section id="acesso" class="section">
+    <div class="container">
+      <h2 style="font-weight:700">Acesso</h2>
+      <div class="card" style="margin-top:1rem">
+        <p class="muted" style="margin-bottom:1rem">Entre com seu e-mail e senha para acessar o painel.</p>
+        <form id="loginForm" style="display:grid;gap:.75rem;max-width:420px">
+          <input id="lgEmail" type="email" placeholder="E-mail" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <input id="lgPassword" type="password" placeholder="Senha" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <button id="lgSubmit" type="button" class="btn btn-primary" style="background:var(--primary);color:#fff">Entrar</button>
+          <div id="lgStatus" class="muted"></div>
+          <div class="muted" style="font-size:.9rem">Não tem conta? <a href="#" id="openSignup" style="color:var(--primary);text-decoration:underline">Criar conta</a></div>
+        </form>
+      </div>
+      <div id="signupCard" class="card" style="margin-top:1rem;display:none">
+        <h3 style="margin:0 0 .5rem;font-weight:600">Criar conta de Corretor</h3>
+        <form id="signupForm" style="display:grid;gap:.75rem;max-width:520px">
+          <input id="scName" type="text" placeholder="Nome" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <input id="scEmail" type="email" placeholder="E-mail" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <input id="scWhats" type="text" placeholder="WhatsApp" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <input id="scPass" type="password" placeholder="Senha (mín. 6 caracteres)" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <button id="scSend" type="button" class="btn btn-primary" style="background:var(--primary);color:#fff">Enviar código</button>
+            <span id="scStatus" class="muted"></span>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input id="scCode" type="text" maxlength="6" placeholder="Código de 6 dígitos" style="flex:1;border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
+            <button id="scConfirm" type="button" class="btn btn-primary">Confirmar código</button>
+            <button id="scNext" type="button" class="btn btn-primary" style="display:none;background:var(--primary);color:#fff">Prosseguir</button>
+          </div>
+          <div id="scResult" class="muted"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section id="modulos" class="section">
     <div class="container">
       <h2 style="font-weight:700">Módulos</h2>
@@ -72,21 +111,20 @@
     </div>
   </section>
 
-  <section id="acesso" class="section">
-    <div class="container">
-      <h2 style="font-weight:700">Acesso</h2>
-      <div class="card" style="margin-top:1rem">
-        <p class="muted" style="margin-bottom:1rem">Entre com seu e-mail e senha para acessar o painel.</p>
-        <form style="display:grid;gap:.75rem;max-width:420px">
-          <input type="email" placeholder="E-mail" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
-          <input type="password" placeholder="Senha" style="border:1px solid #e5e7eb;border-radius:.5rem;padding:.6rem 1rem">
-          <button type="button" class="btn btn-primary" style="background:var(--primary);color:#fff">Entrar</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
   <footer class="footer">
     <div class="container">© Nova Terra Consórcio — Plataforma em desenvolvimento</div>
   </footer>
+  <script>
+    (function(){
+      var openBtn=document.getElementById('openSignup'); var card=document.getElementById('signupCard'); var scEmail=document.getElementById('scEmail'); var scPass=document.getElementById('scPass'); var scName=document.getElementById('scName'); var scWhats=document.getElementById('scWhats'); var scSend=document.getElementById('scSend'); var scStatus=document.getElementById('scStatus'); var scCode=document.getElementById('scCode'); var scConfirm=document.getElementById('scConfirm'); var scResult=document.getElementById('scResult');
+      function api(body){ return fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/signup-code',{ method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(body) }).then(function(r){ return r.json() }) }
+      if(openBtn){ openBtn.addEventListener('click', function(e){ e.preventDefault(); card.style.display='block'; document.getElementById('acesso').scrollIntoView({behavior:'smooth'}) }) }
+      if(scSend){ scSend.addEventListener('click', function(){ scStatus.textContent=''; scResult.textContent=''; var email=String(scEmail.value||'').trim(); var pass=String(scPass.value||'').trim(); if(!email||!pass||pass.length<6){ scStatus.textContent='Preencha e-mail e senha válida'; return } api({ action:'start', email }).then(function(j){ if(j&&j.ok){ scStatus.textContent=j.sent?'Código enviado por email':'Código gerado'; } else { scStatus.textContent='Falha ao enviar código' } }).catch(function(){ scStatus.textContent='Erro de rede' }) }) }
+      var scNext=document.getElementById('scNext'); var lgEmail=document.getElementById('lgEmail'); var lgPass=document.getElementById('lgPassword'); var lgSubmit=document.getElementById('lgSubmit'); var lgStatus=document.getElementById('lgStatus');
+      function login(email, password){ lgStatus.textContent=''; return fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/login',{ method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ email, password }) }).then(function(r){ return r.json() }) }
+      if(lgSubmit){ lgSubmit.addEventListener('click', function(){ var email=String(lgEmail.value||'').trim(); var pass=String(lgPass.value||'').trim(); if(!email||!pass){ lgStatus.textContent='Informe e-mail e senha'; return } login(email, pass).then(function(j){ if(j&&j.ok&&j.access_token){ try{ localStorage.setItem('nt_session', j.access_token); localStorage.setItem('nt_email', email) }catch{} window.location.href='/sistema/dashboard/'; } else { lgStatus.textContent=j&&j.error?j.error:'Falha ao entrar' } }).catch(function(){ lgStatus.textContent='Erro de rede' }) }) }
+      if(scConfirm){ scConfirm.addEventListener('click', function(){ scResult.textContent=''; var email=String(scEmail.value||'').trim(); var pass=String(scPass.value||'').trim(); var name=String(scName.value||'').trim(); var whatsapp=String(scWhats.value||'').trim(); var code=String(scCode.value||'').trim(); if(!email||!pass||code.length!==6){ scResult.textContent='Preencha e-mail, senha e código'; return } api({ action:'verify', email, password:pass, name, whatsapp, code }).then(function(j){ if(j&&j.ok){ scResult.textContent='Conta criada com sucesso'; if(scNext){ scNext.style.display='inline-flex'; scNext.onclick=function(){ try{ lgEmail.value=email }catch{} document.getElementById('loginForm').scrollIntoView({behavior:'smooth'}) } } } else { scResult.textContent=j&&j.error?j.error:'Falha ao criar conta' } }).catch(function(){ scResult.textContent='Erro de rede' }) }) }
+      try{ var logo=document.getElementById('siteLogo'); var fav=document.getElementById('faviconLink'); var url='/assets/logo.png'; if(logo){ logo.src=url; logo.onerror=function(){ logo.style.display='none'; logo.parentNode.innerHTML='<span class="brand-title">NT</span>' } } if(fav){ fav.href=url } }catch{}
+    })()
+  </script>
 </body></html>
