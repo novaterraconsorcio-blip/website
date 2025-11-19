@@ -1969,6 +1969,10 @@ html {
         if(data&&Array.isArray(data.items)) return data.items;
         return [];
       }
+      try{
+        var ls = localStorage.getItem('nt_cf_accordions');
+        if(ls){ var j = JSON.parse(ls); if(Array.isArray(j) && j.length){ render(j) } }
+      }catch{}
       var pubUrl='https://ahnordxbhndrhfbkqvro.supabase.co/storage/v1/object/public/site-config/cf-accordions.json';
       fetch(pubUrl).then(function(res){return res.text()}).then(function(txt){
         var data=[]; try{data=normalize(JSON.parse(txt))}catch{}

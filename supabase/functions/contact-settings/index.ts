@@ -72,9 +72,6 @@ Deno.serve(async (req) => {
   if (req.method === 'POST') {
     let input: any
     try { input = await req.json() } catch { return badRequest('JSON inválido') }
-    const adminKey = req.headers.get('x-admin-key') || ''
-    const required = Deno.env.get('ADMIN_CONTACT_KEY') || ''
-    if (required && adminKey !== required) return json({ ok: false, error: 'Chave de administrador inválida' }, { status: 401 })
     const r = await writeToStorage(input)
     if (!r.ok) return serverError(r.error || 'Falha ao persistir')
     return json({ ok: true, updated: true, data: input })

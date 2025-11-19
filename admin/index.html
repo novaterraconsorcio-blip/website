@@ -99,6 +99,10 @@
       const adminKey = document.getElementById('adminKey');
       const current = Object.assign({}, defaults, loadFromLS());
       phone.value = current.phone; email.value = current.email; address.value = current.address; whatsapp.value = current.whatsapp;
+      fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/contact-settings', { method: 'GET' })
+        .then(res => res.text().then(t => { try { return { ok: res.ok, body: JSON.parse(t) } } catch { return { ok: res.ok, body: null } } }))
+        .then(({ ok, body }) => { if (ok && body && body.data) { const d = body.data; phone.value = d.phone || phone.value; email.value = d.email || email.value; address.value = d.address || address.value; whatsapp.value = d.whatsapp || whatsapp.value; saveToLS({ phone: phone.value.trim(), email: email.value.trim(), address: address.value.trim(), whatsapp: whatsapp.value.trim() }); } })
+        .catch(()=>{});
 
       form.addEventListener('submit', async (e)=>{
         e.preventDefault();
@@ -107,7 +111,7 @@
         setStatus('ok', 'Configurações salvas localmente. Abra /contato para ver.');
         try {
           const res = await fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/contact-settings', {
-            method: 'POST', headers: { 'Content-Type':'application/json', 'x-admin-key': adminKey.value || '' }, body: JSON.stringify(data)
+            method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(data)
           });
           const t = await res.text(); let j=null; try{ j=JSON.parse(t) }catch{}
           if (res.ok && j && (j.ok||j.updated)) setStatus('ok', 'Persistência enviada.'); else setStatus('err', (j&&j.error)||'Persistência indisponível. Valores locais aplicados.');
@@ -174,7 +178,12 @@
           cfList.appendChild(wrap);
         });
       }
-      renderCF();
+      (function(){
+        fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/cf-accordions', { method: 'GET' })
+          .then(res => res.text().then(t => { try { return { ok: res.ok, body: JSON.parse(t) } } catch { return { ok: res.ok, body: null } } }))
+          .then(({ ok, body }) => { if (ok && body && Array.isArray(body.items) && body.items.length) { setCF(body.items) } renderCF() })
+          .catch(()=>{ renderCF() })
+      })();
       document.getElementById('cfAdd').addEventListener('click',()=>{
         const arr=getCF(); if(arr.length>=6){ cfMsg('err','Limite de 6 itens atingido'); return }
         arr.push({ title:'Novo item', content:'Conteúdo...' }); setCF(arr); renderCF(); cfMsg('ok','Item adicionado');
@@ -188,7 +197,7 @@
         setCF(arr); cfMsg('ok','Accordions salvos localmente.');
         try{
           const r = await fetch('https://ahnordxbhndrhfbkqvro.supabase.co/functions/v1/cf-accordions', {
-            method:'POST', headers:{'Content-Type':'application/json','x-admin-key': adminKey.value||''}, body: JSON.stringify({ items: arr })
+            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ items: arr })
           });
           const t=await r.text(); let j=null; try{ j=JSON.parse(t) }catch{}
           if(r.ok && j && j.ok){ cfMsg('ok','Persistência enviada com sucesso.') }
