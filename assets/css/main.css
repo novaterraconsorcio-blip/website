@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 :root{--color-primary:#658f4c;--color-secondary:#346d47;--color-neutral:#24352f;--bg:#ffffff;--bg-muted:#f5f7f6;--text:#24352f}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.5}
+html,body{margin:0;padding:0;color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.5}
+header button[aria-expanded] + .overflow-hidden{display:none!important}
 a{color:var(--color-secondary);text-decoration:none}
 a:hover{opacity:.9}
 .btn{display:inline-block;padding:.75rem 1rem;border-radius:.5rem;transition:all .3s ease;font-weight:600;border:2px solid transparent}

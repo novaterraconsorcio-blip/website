@@ -1,7 +1,8 @@
 const navToggle=document.querySelector('.nav-toggle');const navList=document.getElementById('primary-nav');if(navToggle&&navList){navToggle.addEventListener('click',()=>{const open=navList.classList.toggle('open');navToggle.setAttribute('aria-expanded',open?'true':'false')})}
 
 document.addEventListener('DOMContentLoaded',()=>{
-  const buttons=[...document.querySelectorAll('button[aria-expanded]')];
+  const scope=document.querySelector('.max-w-3xl.mx-auto.space-y-4');
+  const buttons=scope?[...scope.querySelectorAll('button[aria-expanded]')]:[];
   buttons.forEach((btn)=>{
     const item=btn.closest('.border');
     let panel=(item?item.querySelector('.overflow-hidden'):null)||btn.nextElementSibling;
